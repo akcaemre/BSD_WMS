@@ -1,0 +1,43 @@
+<h1>Lager</h1>
+<div class="row">
+    <div class="col col-xl-12 col-lg-12">
+        <div>
+            Bundhaken <input type="radio" name="optionsRadios" id="rbttn_Bundhaken" (click)="radioButtonOnClick('Bundhaken')" />
+            Knöpfe <input type="radio" name="optionsRadios" id="rbttn_Knoepfe" (click)="radioButtonOnClick('Knoepfe')" />
+            Nähseide <input type="radio" name="optionsRadios" id="rbttn_Naehseide" (click)="radioButtonOnClick('Naehseide')" />
+            Rohwaren <input type="radio" name="optionsRadios" id="rbttn_Rohwaren" (click)="radioButtonOnClick('Rohwaren')" checked />
+        </div>
+        <div>
+            <input type="text" (input)="filterBy('name');" id="txt_Name" placeholder="Suche nach Warengruppe..." size="40" />
+            <input type="text" (input)="filterBy('color');" id="txt_Color" placeholder="Suche nach Nähseidenfarbe..." size="40" disabled />
+            <input type="text" (input)="filterBy('strength');" id="txt_Strength" placeholder="Suche nach Stärke..." size="40" disabled />
+        </div>
+        <div class="card mb-3">
+            <table class="card-body table table-hover" id="warehouseitemtable">
+                <thead></thead>
+                <tbody></tbody>
+                <!--
+                <tbody *ngFor="let l of Lagereintrag | async; let i = index" (click)="setClickedRow(i + 1)" [class.active]="i == selectedRow">
+                    <tr>
+                        <th scope="row">{{ i + 1 }}</th>
+                        <td>{{ l }}</td>
+                    </tr> 
+                </tbody>
+            -->
+            </table>
+        </div>
+        <div class="well well-lg">
+                Selected Row : <strong> {{ selectedRow }} </strong>
+            </div>
+        <div class="row">
+            <div class="col-xl-12 text-xs-center">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <button type="button" class="btn btn-secondary" placement="top"(click)="returnIntoWarehouse()">Einlagern</button>
+                        <button type="button" class="btn btn-secondary" placement="top" (click)="outsourceFromWarehouse()">Auslagern</button>
+                    </div>
+                </div>   
+            </div>
+        </div>
+    </div>
+</div>

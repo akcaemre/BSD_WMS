@@ -1,0 +1,40 @@
+<div class="card mb-3">
+    <div class="card-header">Transaktionen</div>
+    <table class="card-body table" id="myTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Person</th>
+                <th>Gegenstand</th>
+                <th>Menge</th>
+                <th>Einheit</th>
+                <th>Preis/Einheit</th>
+                <th>Endpreis</th>
+                <th>Währung</th>
+                <th>Datum</th>
+                <th>Bezahlt</th>
+                <th>#</th>
+            </tr>
+        </thead>
+            <tbody *ngFor="let t of transactions | async; let i = index">
+                <tr id='{{ "tr" + i }}' class={{t.tableType}}>
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ t.Name }}</td>
+                    <td>{{ t.Produkt }}</td>
+                    <td>{{ t.Menge }}</td>
+                    <td>{{ t.Einheit }}</td>
+                    <td>{{ t.PreisProEinheit }}</td>
+                    <td>{{ t.Gesamtpreis }}</td>
+                    <td>{{ t.Waehrung }}</td>
+                    <td>{{ t.Datum }}</td>
+                    <td>{{ t.Bezahlt }}</td>
+                    <td>
+                        <div class="radio">
+                            <input type=radio name=optionsRadios id='{{"btnRadio" + (i + 1) }}' value='{{ "option" + (i + 1) }}'/>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+    </table>
+    <button class="btn rounded-btn" (click)="printTransBySelection()" name="btnPrint" id="btnPrintTrans"> Rechnung erstellen </button>
+</div>
