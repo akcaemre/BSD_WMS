@@ -19,7 +19,7 @@ router.get('/', function (req, res, next) {
 router.get('/read', function(req, res) {
   var table = url.parse(req.url, true).query.table;
 
-  if(table === 'users' || table === 'sessions') {
+  if(table === 'sessions') {
     res.status(401).send('Nicht authorisiert! Andere Tabelle auswählen.');
     return;  
   }

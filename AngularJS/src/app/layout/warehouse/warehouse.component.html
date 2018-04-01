@@ -1,17 +1,19 @@
 <h1>Lager</h1>
+<div>
+    <div>
+        Bundhaken <input type="radio" name="optionsRadios" id="rbttn_Bundhaken" (click)="radioButtonOnClick('Bundhaken')" />
+        Knöpfe <input type="radio" name="optionsRadios" id="rbttn_Knoepfe" (click)="radioButtonOnClick('Knoepfe')" />
+        Nähseide <input type="radio" name="optionsRadios" id="rbttn_Naehseide" (click)="radioButtonOnClick('Naehseide')" />
+        Rohwaren <input type="radio" name="optionsRadios" id="rbttn_Rohwaren" (click)="radioButtonOnClick('Rohwaren')" checked />
+    </div>
+    <div>
+        <input type="text" (input)="filterBy('name');" id="txt_Name" placeholder="Suche nach Warengruppe..." size="40" />
+        <input type="text" (input)="filterBy('color');" id="txt_Color" placeholder="Suche nach Nähseidenfarbe..." size="40" disabled />
+        <input type="text" (input)="filterBy('strength');" id="txt_Strength" placeholder="Suche nach Stärke..." size="40" disabled />
+    </div>
+</div>
 <div class="row">
     <div class="col col-xl-12 col-lg-12">
-        <div>
-            Bundhaken <input type="radio" name="optionsRadios" id="rbttn_Bundhaken" (click)="radioButtonOnClick('Bundhaken')" />
-            Knöpfe <input type="radio" name="optionsRadios" id="rbttn_Knoepfe" (click)="radioButtonOnClick('Knoepfe')" />
-            Nähseide <input type="radio" name="optionsRadios" id="rbttn_Naehseide" (click)="radioButtonOnClick('Naehseide')" />
-            Rohwaren <input type="radio" name="optionsRadios" id="rbttn_Rohwaren" (click)="radioButtonOnClick('Rohwaren')" checked />
-        </div>
-        <div>
-            <input type="text" (input)="filterBy('name');" id="txt_Name" placeholder="Suche nach Warengruppe..." size="40" />
-            <input type="text" (input)="filterBy('color');" id="txt_Color" placeholder="Suche nach Nähseidenfarbe..." size="40" disabled />
-            <input type="text" (input)="filterBy('strength');" id="txt_Strength" placeholder="Suche nach Stärke..." size="40" disabled />
-        </div>
         <div class="card mb-3">
             <table class="card-body table table-hover" id="warehouseitemtable">
                 <thead></thead>

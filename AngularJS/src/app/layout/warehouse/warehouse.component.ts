@@ -14,7 +14,7 @@ export class WarehouseComponent implements OnInit {
     selectedRow : Number = 0;
     setClickedRow : Function;
     rowCount: number;
-    private readURL: string = "http://localhost:1337/read?uid=" + AppComponent.uid + "&table=";
+
     private dbData : Array<any> = new Array<any>();
     private name : string = "";
     private color : string = "";
@@ -29,7 +29,7 @@ export class WarehouseComponent implements OnInit {
     };
 
     ngOnInit() {
-        this.getItems(this.readURL + "Rohwaren");
+        this.getItems(AppComponent.getLink("read", "&table=Rohwaren"));
      }
     
     radioButtonOnClick (table : string) {
@@ -42,7 +42,7 @@ export class WarehouseComponent implements OnInit {
         }
 
         this.currentTable = table;
-        this.getItems(this.readURL + table);
+        this.getItems(AppComponent.getLink("read", "&table=" + table));
     }
 
     filterBy (filterName : string) {

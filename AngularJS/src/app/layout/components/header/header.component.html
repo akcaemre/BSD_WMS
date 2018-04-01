@@ -40,7 +40,7 @@
                     <a class="dropdown-item" href="javascript:void(0)">
                         <i class="fa fa-fw fa-user"></i> {{ 'Profile' | translate }}
                     </a>
-                    <a class="dropdown-item" href="javascript:void(0)">
+                    <a class="dropdown-item" [routerLink]="['/settings']" [routerLinkActive]="['router-link-active']">
                         <i class="fa fa-fw fa-gear"></i> {{ 'Settings' | translate }}
                     </a>
                     <a class="dropdown-item" [routerLink]="['/login']" (click)="onLoggedout()">

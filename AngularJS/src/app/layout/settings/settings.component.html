@@ -1,0 +1,51 @@
+<h1>Settings</h1>
+
+<div id="div_IP" class="col col-xl-12 col-lg-6">
+    <h2>Netzwerkeinstellungen</h2>
+    IP Adresse ändern: <input type="text" id="input_IP" />
+    <button id="bttn_SaveIP" class="btn btn-primary" (click)="setIP()">Speichern</button>
+    <p id="p_outputIP"></p>
+</div>
+
+<div id="div_Usersettings" class="col col-xl-12 col-lg-6">
+    <h2>Benutzereinstellungen</h2>
+    <h3>Neuen Nutzer registrieren</h3>
+    <form>
+        <div class="form-group row">
+            <label for="input_email" class="col-2 col-form-label">E-Mail</label>
+           <div class="col-10"><input id="input_email" type="text" class="form-control col-xl-4" placeholder="Geben Sie hier die neue E-Mail Adresse ein" required/></div>
+        </div>
+
+        <div class="form-group row">
+            <label for="input_username" class="col-2 col-form-label">Name</label>
+            <div class="col-10"><input id="input_username" type="text" class="form-control col-xl-4" placeholder="Geben Sie hier den Namen des neuen Benutzers ein" required/></div>
+        </div>
+
+        <div class="form-group row">
+            <label for="input_password" class="col-2 col-form-label">Passwort</label>
+            <div class="col-10"><input id="input_password" type="password" class="form-control col-xl-4" placeholder="Geben Sie hier das Passwort ein" required/></div>
+        </div>
+
+        <div class="form-group row">
+            <label for="input_passwordConf" class="col-2 col-form-label">Passwort Wiederholung</label>
+            <div class="col-10"><input id="input_passwordConf" type="password" class="form-control col-xl-4" placeholder="Geben Sie hier nochmals das Passwort ein" required/></div>
+        </div>
+
+        <p><button type="submit" class="btn btn-secondary" (click)="register()">Registrieren</button></p>
+    </form>
+</div>
+
+<div class="col col-xl-6 col-lg-6">
+    <div class="card mb-3">
+        <div class="card-header">Registrierte Nutzer</div>
+            <div class="card-body table-responsive">
+                <table id="table_Users" class="table table-striped">
+                    <thead>
+                        <th>E-Mail</th>
+                        <th>Benutzername</th>
+                    </thead>
+                    <tbody id="tbody_Users"></tbody>
+                </table>
+            </div>
+    </div>
+</div>

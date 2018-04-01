@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap/modal/modal.module';
+import { ngbootbox } from 'ngbootbox';
 
 @Component({
     selector: 'app-header',
@@ -18,6 +20,11 @@ export class HeaderComponent implements OnInit {
 
     onLoggedout() {
         localStorage.removeItem('isLoggedin');
+    }
+
+    changeIP(newIP : string) {        
+        console.log(newIP);
+        localStorage.setItem('IP', newIP);
     }
 
     public static setUsername(newUsername : string) {
