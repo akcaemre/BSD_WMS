@@ -9,9 +9,12 @@ export class AppComponent implements OnInit {
     public static uid : string;
 
     constructor() {
-        //window.addEventListener("beforeunload", function() { localStorage.removeItem('isLoggedin')});
-        localStorage.setItem("IP", "localhost");
+        window.addEventListener("beforeunload", function() { localStorage.removeItem('isLoggedin')});
+        if(localStorage.getItem("IP") == undefined || localStorage.getItem("IP") == "")
+            localStorage.setItem("IP", "localhost");
     }
+
+    ngOnInit() {}
 
     /**
      * Returns the generated Link. 
@@ -20,12 +23,10 @@ export class AppComponent implements OnInit {
      * @param queryparams 
      */
     public static getLink(site : string, queryparams : string) {
-        return "http://" + localStorage.getItem("IP") + ":1337/" + site + "?uid=5abfa0b55b980f1cde63d321" + queryparams;
+        return "http://" + localStorage.getItem("IP") + ":1337/" + site + "?uid=" + this.uid + queryparams;
     }
 
     public static setIP(ip : string) {
         localStorage.setItem("IP", ip);
     }
-
-    ngOnInit() {}
 }

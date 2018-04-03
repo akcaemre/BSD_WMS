@@ -1,10 +1,11 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { routerTransition } from '../router.animations';
 import { Http } from '@angular/http';
 import { Input } from '@angular/compiler/src/core';
 import { AppComponent } from '../app.component';
 import { HeaderComponent } from '../layout/components/header/header.component';
+import 'rxjs/add/operator/map';
 
 @Component({
     selector: 'app-login',
@@ -13,7 +14,6 @@ import { HeaderComponent } from '../layout/components/header/header.component';
     animations: [routerTransition()]
 })
 export class LoginComponent implements OnInit {
-    private postLoginUrl = "http://localhost:1337/login";
     private email : string = "";
     private password : string = "";
     private alerts: Array<any> = [];
@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
     
     getLoginData() {
         return this.http.post(
-            this.postLoginUrl, 
+            AppComponent.getLink("login", ""), 
             { 
                 "email" : this.email, 
                 "password" : this.password 

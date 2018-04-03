@@ -90,7 +90,7 @@ export class WarehouseComponent implements OnInit {
         
         for(var idx = 0; idx < data.length; idx++) {
             if(this.shouldShowEntry(data[idx], filter)) { 
-                    tbodyOut += "<tr><th scope=\"row\">" + (idx+1) + "</th>";
+                    tbodyOut += "<tr><th scope=\"col\">" + (idx+1) + "</th>";
 
                     for (var key in this.dbData[0]) {
                         if(!key.includes("id")) {

@@ -2,7 +2,7 @@
 
 <div id="div_IP" class="col col-xl-12 col-lg-6">
     <h2>Netzwerkeinstellungen</h2>
-    IP Adresse ändern: <input type="text" id="input_IP" />
+    IP Adresse ändern: <input [(ngModel)]="ip" name="input_IP" type="text" id="input_IP" />
     <button id="bttn_SaveIP" class="btn btn-primary" (click)="setIP()">Speichern</button>
     <p id="p_outputIP"></p>
 </div>
@@ -10,29 +10,47 @@
 <div id="div_Usersettings" class="col col-xl-12 col-lg-6">
     <h2>Benutzereinstellungen</h2>
     <h3>Neuen Nutzer registrieren</h3>
-    <form>
-        <div class="form-group row">
-            <label for="input_email" class="col-2 col-form-label">E-Mail</label>
-           <div class="col-10"><input id="input_email" type="text" class="form-control col-xl-4" placeholder="Geben Sie hier die neue E-Mail Adresse ein" required/></div>
+    <form class="needs-validation" novalidate>
+    <div class="form-row">
+        
+        <div class="col-md-4 mb-3">
+            <label for="validationCustom02">Benutzername</label>
+            <input [(ngModel)]="username" name="Username" type="text" class="form-control" id="validationCustom02" placeholder="Benutzername" required>
+            <div class="valid-feedback">Sieht gut aus!</div>
+            <div class="invalid-feedback">Bitte überprüfen Sie Ihre Eingabe!.</div>
         </div>
 
-        <div class="form-group row">
-            <label for="input_username" class="col-2 col-form-label">Name</label>
-            <div class="col-10"><input id="input_username" type="text" class="form-control col-xl-4" placeholder="Geben Sie hier den Namen des neuen Benutzers ein" required/></div>
+        <div class="col-md-4 mb-3">
+        <label for="validationCustomUsername">E-Mail</label>
+        <div class="input-group">
+            <div class="input-group-prepend">
+            <span class="input-group-text" id="inputGroupPrepend">@</span>
+            </div>
+            <input [(ngModel)]="email" name="Email" type="e-mail" class="form-control" id="validationCustomUsername" placeholder="email@mail.com" aria-describedby="inputGroupPrepend" required>
+            <div class="valid-feedback">Sieht gut aus!</div>
+            <div class="invalid-feedback">Bitte überprüfen Sie Ihre Eingabe!.</div>
+        </div>
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="col-md-4 mb-3">
+        <label for="validationCustom03">Passwort</label>
+        <input [(ngModel)]="password" name="Password" type="password" class="form-control" id="validationCustom03" placeholder="Passwort" required>
+        <div class="invalid-feedback">Bitte überprüfen Sie Ihre Eingabe!.</div>
         </div>
 
-        <div class="form-group row">
-            <label for="input_password" class="col-2 col-form-label">Passwort</label>
-            <div class="col-10"><input id="input_password" type="password" class="form-control col-xl-4" placeholder="Geben Sie hier das Passwort ein" required/></div>
+        <div class="col-md-4 mb-3">
+            <label for="validationCustom04">Passwort wiederholen</label>
+            <input [(ngModel)]="passwordConf" name="PasswordConf" type="password" class="form-control" id="validationCustom04" placeholder="Passwort wiederholen" required>
+            <div class="invalid-feedback">Bitte überprüfen Sie Ihre Eingabe!.</div>
         </div>
+    </div>
 
-        <div class="form-group row">
-            <label for="input_passwordConf" class="col-2 col-form-label">Passwort Wiederholung</label>
-            <div class="col-10"><input id="input_passwordConf" type="password" class="form-control col-xl-4" placeholder="Geben Sie hier nochmals das Passwort ein" required/></div>
-        </div>
+    <button class="btn btn-primary" type="submit" (click)="register()">Submit form</button>
 
-        <p><button type="submit" class="btn btn-secondary" (click)="register()">Registrieren</button></p>
-    </form>
+    <p id="out">Status: </p>
+  </form>
 </div>
 
 <div class="col col-xl-6 col-lg-6">
@@ -43,9 +61,22 @@
                     <thead>
                         <th>E-Mail</th>
                         <th>Benutzername</th>
+                        <th>#</th>
                     </thead>
                     <tbody id="tbody_Users"></tbody>
                 </table>
+                <button class="btn btn-primary" (click)="deleteUser()">Löschen</button>
             </div>
     </div>
+</div>
+
+<!-- Small modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Small modal</button>
+
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      YOU WOT MATE
+    </div>
+  </div>
 </div>

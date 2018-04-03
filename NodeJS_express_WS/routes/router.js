@@ -108,6 +108,29 @@ router.post('/login', function (req, res, next) {
   }
 });
 
+router.delete("/delete", function(req, res) {
+  var table = url.parse(req.url, true).query.table;
+
+  if(table !== "users") {
+    res.status(401).send("Nicht berechtigt!");
+    return;
+  }
+
+  var uid = url.parse(req.url, true).query.uid;
+
+  User.findById(uid, function (err, result) {
+    if(err) {
+      res.status(401).send('UID not found;'+err);
+      return;
+    } else if(!result) {
+      res.status(401).send('UID not found');
+      return;
+    }
+      remove(req, res, table, { "email": url.parse(req.url, true).query.email });
+      return;
+  });
+});
+
 // POST route for signin
 router.post('/signin',  function (req, res, next) {
     // confirm that user typed same password twice
@@ -229,6 +252,29 @@ function update(req, res, collection) {
                   res.end(400);
               } else {
                   res.send("1 document updated");
+                  res.end(200);
+              }
+          });
+          client.close();
+      }
+  });
+}
+
+function remove(req, res, collection, toDelete) {
+  MongoClient.connect(uri, function (err, client) {
+      if (err) {
+          res.send(err);
+          res.end(400);
+      } else {
+
+          var db = client.db(database);
+
+          db.collection(collection).deleteOne(toDelete, function (err, obj) {
+              if (err) {
+                  res.send(err);
+                  res.end(400);
+              } else {
+                  res.send("1 document deleted");
                   res.end(200);
               }
           });

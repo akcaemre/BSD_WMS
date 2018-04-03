@@ -1,22 +1,28 @@
 <h1>Lager</h1>
-<div>
-    <div>
-        Bundhaken <input type="radio" name="optionsRadios" id="rbttn_Bundhaken" (click)="radioButtonOnClick('Bundhaken')" />
-        Knöpfe <input type="radio" name="optionsRadios" id="rbttn_Knoepfe" (click)="radioButtonOnClick('Knoepfe')" />
-        Nähseide <input type="radio" name="optionsRadios" id="rbttn_Naehseide" (click)="radioButtonOnClick('Naehseide')" />
-        Rohwaren <input type="radio" name="optionsRadios" id="rbttn_Rohwaren" (click)="radioButtonOnClick('Rohwaren')" checked />
-    </div>
-    <div>
-        <input type="text" (input)="filterBy('name');" id="txt_Name" placeholder="Suche nach Warengruppe..." size="40" />
-        <input type="text" (input)="filterBy('color');" id="txt_Color" placeholder="Suche nach Nähseidenfarbe..." size="40" disabled />
-        <input type="text" (input)="filterBy('strength');" id="txt_Strength" placeholder="Suche nach Stärke..." size="40" disabled />
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">Bundhaken <input type="radio" name="optionsRadios" id="rbttn_Bundhaken" (click)="radioButtonOnClick('Bundhaken')" /></div>
+        <div class="col-sm">Knöpfe <input type="radio" name="optionsRadios" id="rbttn_Knoepfe" (click)="radioButtonOnClick('Knoepfe')" /></div>
+        <div class="col-sm">Nähseide <input type="radio" name="optionsRadios" id="rbttn_Naehseide" (click)="radioButtonOnClick('Naehseide')" /></div>
+        <div class="col-sm">Rohwaren <input type="radio" name="optionsRadios" id="rbttn_Rohwaren" (click)="radioButtonOnClick('Rohwaren')" checked /></div>
     </div>
 </div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm"><input type="text" (input)="filterBy('name');" id="txt_Name" placeholder="Suche nach Warengruppe..." size="40" /></div>
+        <div class="col-sm"><input type="text" (input)="filterBy('color');" id="txt_Color" placeholder="Suche nach Nähseidenfarbe..." size="40" disabled /></div>
+        <div class="col-sm"><input type="text" (input)="filterBy('strength');" id="txt_Strength" placeholder="Suche nach Stärke..." size="40" disabled /></div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col col-xl-12 col-lg-12">
         <div class="card mb-3">
-            <table class="card-body table table-hover" id="warehouseitemtable">
-                <thead></thead>
+            <div class="card-header">Waren</div>
+            <table class="card-body table table-hover table-bordered" id="warehouseitemtable">
+                <thead class="thead-light"></thead>
                 <tbody></tbody>
                 <!--
                 <tbody *ngFor="let l of Lagereintrag | async; let i = index" (click)="setClickedRow(i + 1)" [class.active]="i == selectedRow">

@@ -4,6 +4,8 @@ import { Http } from '@angular/http';
 import { Input } from '@angular/compiler/src/core';
 import { Observable } from 'rxjs/Observable';
 import { Response } from '@angular/http/src/static_response';
+import 'rxjs/add/operator/map'
+import { AppComponent } from '../../app.component';
 
 @Component({
     selector: 'app-transactions',
@@ -11,7 +13,6 @@ import { Response } from '@angular/http/src/static_response';
     styleUrls: ['./transactions.component.scss']
 })
 export class TransactionComponent implements OnInit {    
-    private readUrl : string = "http://localhost:1337/read";
     public transactions: Observable<Array<any>>;
     private _transactions : Array<any> = new Array<any>();
 
@@ -27,7 +28,7 @@ export class TransactionComponent implements OnInit {
     }
 
     getTransactions(){
-        return this.http.get(this.readUrl + "?table=Transaktionen")
+        return this.http.get(AppComponent.getLink("read", "&table=Transaktionen"))
         .map((res : Response) => res.json());
 
         /*
