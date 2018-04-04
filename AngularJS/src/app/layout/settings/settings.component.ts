@@ -11,7 +11,7 @@ import 'rxjs/add/operator/map';
 @Component({
     selector: 'app-login',
     templateUrl: './settings.component.html',
-    styleUrls: ['./settings.component.scss'],
+    styleUrls: ['./settings.component.scss',],
     animations: [routerTransition()]
 })
 export class SettingsComponent implements OnInit {
@@ -22,29 +22,31 @@ export class SettingsComponent implements OnInit {
     private passwordConf : string;
     private userEntries : Array<User>;
 
-    constructor(public router: Router, private http : Http) {
-        window.addEventListener('load', function() {
-            var forms = document.getElementsByClassName('needs-validation');
-            var validation = Array.prototype.filter.call(forms, function(form) {
-              form.addEventListener('submit', function(event) {
-                if (form.checkValidity() === false) {
-                  event.preventDefault();
-                  event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-              }, false);
-            });
-          }, false);
-     }
+    constructor(public router: Router, private http : Http) {}
 
     ngOnInit() {
         this.refreshUserList();
+        var forms = document.getElementsByClassName('needs-validation');
+        var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+            }, false);
+        });
     }
 
     deleteUser() {
         for(var idx = 0; idx <= this.userEntries.length; idx++)  {
             var b : any = document.getElementById("btnRadio" + idx);
             if(b.checked) {
+                if(this.userEntries[idx].getUsername() === HeaderComponent.getUsername()) {
+                    this.setError("Sie können sich selbst nicht löschen!", "red");
+                    return;
+                }
+
                 this.http.delete(AppComponent.getLink("delete", 
                 "&table=users&email=" + this.userEntries[idx].getEmail())).subscribe(data => {
                     this.setError(this.userEntries[idx].getEmail() + " wurde gelöscht", "green");
@@ -80,6 +82,12 @@ export class SettingsComponent implements OnInit {
         ||  this.username === ""
         ||  this.password === ""
         ||  this.passwordConf === "") {
+            this.setError("Füllen Sie bitte alle Felder aus!", "red");
+            return;
+        }
+
+        if(!this.validateEmail(this.email)) {
+            this.setError("E-Mail stimmt nicht!", "red");
             return;
         }
 
@@ -103,6 +111,11 @@ export class SettingsComponent implements OnInit {
             (err) => {
                 this.setError("Status: Fehlgeschlagen! Meldung: " + err, "red")
             });
+    }
+
+    private validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
     }
 
     private setError(msg : string, color : string) {

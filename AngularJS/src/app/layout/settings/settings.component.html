@@ -10,12 +10,11 @@
 <div id="div_Usersettings" class="col col-xl-12 col-lg-6">
     <h2>Benutzereinstellungen</h2>
     <h3>Neuen Nutzer registrieren</h3>
-    <form class="needs-validation" novalidate>
+    <form class="needs-validation" role="form" novalidate>
     <div class="form-row">
-        
         <div class="col-md-4 mb-3">
             <label for="validationCustom02">Benutzername</label>
-            <input [(ngModel)]="username" name="Username" type="text" class="form-control" id="validationCustom02" placeholder="Benutzername" required>
+            <input [(ngModel)]="username" name="Username" type="text" class="form-control" id="validationCustom02" placeholder="Benutzername" required />
             <div class="valid-feedback">Sieht gut aus!</div>
             <div class="invalid-feedback">Bitte überprüfen Sie Ihre Eingabe!.</div>
         </div>
@@ -26,7 +25,7 @@
             <div class="input-group-prepend">
             <span class="input-group-text" id="inputGroupPrepend">@</span>
             </div>
-            <input [(ngModel)]="email" name="Email" type="e-mail" class="form-control" id="validationCustomUsername" placeholder="email@mail.com" aria-describedby="inputGroupPrepend" required>
+            <input [(ngModel)]="email" name="Email" type="e-mail" class="form-control" id="validationCustomUsername" placeholder="email@mail.com" aria-describedby="inputGroupPrepend" required />
             <div class="valid-feedback">Sieht gut aus!</div>
             <div class="invalid-feedback">Bitte überprüfen Sie Ihre Eingabe!.</div>
         </div>
@@ -36,13 +35,13 @@
     <div class="form-row">
         <div class="col-md-4 mb-3">
         <label for="validationCustom03">Passwort</label>
-        <input [(ngModel)]="password" name="Password" type="password" class="form-control" id="validationCustom03" placeholder="Passwort" required>
+        <input [(ngModel)]="password" name="Password" type="password" class="form-control" id="validationCustom03" placeholder="Passwort" required />
         <div class="invalid-feedback">Bitte überprüfen Sie Ihre Eingabe!.</div>
         </div>
 
         <div class="col-md-4 mb-3">
             <label for="validationCustom04">Passwort wiederholen</label>
-            <input [(ngModel)]="passwordConf" name="PasswordConf" type="password" class="form-control" id="validationCustom04" placeholder="Passwort wiederholen" required>
+            <input [(ngModel)]="passwordConf" name="PasswordConf" type="password" class="form-control" id="validationCustom04" placeholder="Passwort wiederholen" required />
             <div class="invalid-feedback">Bitte überprüfen Sie Ihre Eingabe!.</div>
         </div>
     </div>
@@ -68,15 +67,4 @@
                 <button class="btn btn-primary" (click)="deleteUser()">Löschen</button>
             </div>
     </div>
-</div>
-
-<!-- Small modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-sm">Small modal</button>
-
-<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      YOU WOT MATE
-    </div>
-  </div>
 </div>

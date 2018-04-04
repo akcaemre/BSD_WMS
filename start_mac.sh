@@ -2,7 +2,7 @@
 
 osascript -e 'tell app "Terminal"
     do script "sudo mongod
-<sudo pswd>" 
+<sudo passwd>" 
 end tell'
 
 osascript -e 'tell app "Terminal"
@@ -10,11 +10,11 @@ osascript -e 'tell app "Terminal"
 end tell'
 
 osascript -e 'tell app "Terminal"
-    do script "cd <Path-to-AngularJS>>~/Documents/BSD_WMS/AngularJS
+    do script "cd <Path-to-AngularJS> ~/Documents/BSD_WMS/AngularJS
 npm run-script start" 
 end tell'
 
 osascript -e 'tell app "Terminal"
-    do script "cd <Path-to-NodeJS>~/Documents/BSD_WMS/NodeJS_express_WS
+    do script "cd <Path-to-AngularJS> ~/Documents/BSD_WMS/NodeJS_express_WS
 nodemon app.js" 
 end tell'
