@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Http } from '@angular/http';
 
 @Component({
     selector: 'app-root',
@@ -8,10 +9,11 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
     public static uid : string;
 
-    constructor() {
+    constructor(private http: Http) {
         window.addEventListener("beforeunload", function() { localStorage.removeItem('isLoggedin')});
-        if(localStorage.getItem("IP") == undefined || localStorage.getItem("IP") == "")
-            localStorage.setItem("IP", "localhost");
+
+	AppComponent.setIP(location.host.split(':')[0]);
+
     }
 
     ngOnInit() {}
@@ -23,6 +25,7 @@ export class AppComponent implements OnInit {
      * @param queryparams 
      */
     public static getLink(site : string, queryparams : string) {
+	console.log(localStorage.getItem("IP"));
         return "http://" + localStorage.getItem("IP") + ":1337/" + site + "?uid=" + this.uid + queryparams;
     }
 
