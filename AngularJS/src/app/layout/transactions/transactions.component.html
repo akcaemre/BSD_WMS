@@ -1,22 +1,12 @@
 <h1>Transaktionen</h1>
-<div class="card mb-3">
-    <div class="card-header">Transaktionen</div>
-    <table class="card-body table" id="myTable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Person</th>
-                <th>Gegenstand</th>
-                <th>Menge</th>
-                <th>Einheit</th>
-                <th>Preis/Einheit</th>
-                <th>Endpreis</th>
-                <th>Währung</th>
-                <th>Datum</th>
-                <th>Bezahlt</th>
-                <th>#</th>
-            </tr>
-        </thead>
+<div class="row">
+    <div class="col col-xl-12 col-lg-12">
+        <div class="card mb-3">
+            <div class="card-header">Transaktionen</div>
+            <table class="card-body table table-hover table-bordered" id="myTable">
+                <thead class="thead-light"></thead>
+                <tbody></tbody>
+        <!--
             <tbody *ngFor="let t of transactions | async; let i = index">
                 <tr id='{{ "tr" + i }}' class={{t.tableType}}>
                     <th scope="row">{{ i + 1 }}</th>
@@ -36,6 +26,10 @@
                     </td>
                 </tr>
             </tbody>
-    </table>
-    <button class="btn rounded-btn" (click)="printTransBySelection()" name="btnPrint" id="btnPrintTrans"> Rechnung erstellen </button>
+        -->
+            </table>
+            <button class="btn rounded-btn" (click)="printTransBySelection()" name="btnPrint" id="btnPrintTrans"> Rechnung erstellen </button>
+            <button class="btn rounded-btn" (click)="payTransBySelection()" name="btnPayTrans" id="btnPayTrans"> Rechnung bezahlen </button>
+        </div>
+    </div>
 </div>
