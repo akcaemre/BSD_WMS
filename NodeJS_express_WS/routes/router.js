@@ -208,7 +208,7 @@ function create(req, res, collection) {
                   res.send(err);
                   res.end(400);
               } else {
-                  res.send("Inserted 1 document");
+                  res.send({state: "Inserted 1 document"});
                   res.end(200);
               }
           });
@@ -251,7 +251,7 @@ function update(req, res, collection) {
                   res.send(err);
                   res.end(400);
               } else {
-                  res.send("1 document updated");
+                  res.send({state: "1 document updated", updated: newValues, source: sourceValues});
                   res.end(200);
               }
           });

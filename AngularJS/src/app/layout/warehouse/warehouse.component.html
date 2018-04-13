@@ -17,35 +17,55 @@
     </div>
 </div>
 
+<ng-template #popupDialog>
+    <div class="row">
+        <div class="col col-xl-12 col-lg-12">
+            <div class="card mb-3">
+                <div class="card-header">Menge auswaehlen:</div>
+                <table class="card-body table table-hover table-bordered" id="selectedItemTable">
+                    <thead class="thead-light"></thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <input type="number" id="removeDialogAmount" placeholder="Menge" size="20"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12 text-xs-center">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <button type="button" class="btn btn-secondary" placement="top"(click)="insertIntoWarehouse()">Einlagern</button>
+                    <button type="button" class="btn btn-secondary" placement="top" (click)="outsourceFromWarehouse()">Auslagern</button>
+                </div>
+            </div>   
+        </div>
+    </div>
+</ng-template>
+
 <div class="row">
     <div class="col col-xl-12 col-lg-12">
         <div class="card mb-3">
             <div class="card-header">Waren</div>
             <table class="card-body table table-hover table-bordered" id="warehouseitemtable">
                 <thead class="thead-light"></thead>
-                <tbody></tbody>
-                <!--
-                <tbody *ngFor="let l of Lagereintrag | async; let i = index" (click)="setClickedRow(i + 1)" [class.active]="i == selectedRow">
-                    <tr>
-                        <th scope="row">{{ i + 1 }}</th>
-                        <td>{{ l }}</td>
-                    </tr> 
+                <tbody>
                 </tbody>
-            -->
             </table>
         </div>
-        <div class="well well-lg">
-                Selected Row : <strong> {{ selectedRow }} </strong>
-            </div>
         <div class="row">
             <div class="col-xl-12 text-xs-center">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <button type="button" class="btn btn-secondary" placement="top"(click)="returnIntoWarehouse()">Einlagern</button>
-                        <button type="button" class="btn btn-secondary" placement="top" (click)="outsourceFromWarehouse()">Auslagern</button>
+                        <button type="button" class="btn btn-secondary" placement="top"(click)="showItemDialog()">Select</button>
                     </div>
                 </div>   
             </div>
         </div>
     </div>
 </div>
+
