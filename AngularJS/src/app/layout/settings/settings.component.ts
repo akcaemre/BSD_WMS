@@ -15,7 +15,6 @@ import 'rxjs/add/operator/map';
     animations: [routerTransition()]
 })
 export class SettingsComponent implements OnInit {
-    private ip : string;
     private email : string;
     private username : string;
     private password : string;
@@ -121,40 +120,6 @@ export class SettingsComponent implements OnInit {
     private setError(msg : string, color : string) {
         document.getElementById("out").innerHTML = "Status: " + msg;
         document.getElementById("out").setAttribute("style", "color:" + color);
-    }
-
-    setIP() {
-        if(this.ip === "localhost") {
-            document.getElementById("p_outputIP").innerHTML = "Erfolgreich verändert! Neue IP: " + this.ip;
-            return;
-        }
-
-        try {
-            if(!this.checkIP(this.ip)) {
-                document.getElementById("p_outputIP").innerHTML = "Die IP Adresse ist ungültig! [0-255].[0-255].[0-255].[0-255]";
-                return;
-            }
-            AppComponent.setIP(this.ip);
-            document.getElementById("p_outputIP").innerHTML = "Erfolgreich verändert! Neue IP: " + this.ip;
-        } catch (err) {
-            document.getElementById("p_outputIP").innerHTML = "Ein Fehler ist aufgetreten! Errormeldung: " + err;
-        }
-    }
-
-    private checkIP (toCheck : string) {
-        var toReturn = false;
-
-        try { 
-            var splitted = toCheck.split('.');
-            toReturn = (parseInt(splitted[0]) >= 0 && parseInt(splitted[0]) <= 255)
-                    && (parseInt(splitted[1]) >= 0 && parseInt(splitted[1]) <= 255)
-                    && (parseInt(splitted[2]) >= 0 && parseInt(splitted[2]) <= 255)
-                    && (parseInt(splitted[3]) >= 0 && parseInt(splitted[3]) <= 255);
-        } catch (err) {
-            throw err("Die IP Adresse ist ungültig! ([0-255].[0-255].[0-255].[0-255])");
-        }
-
-        return toReturn;
     }
 }
 

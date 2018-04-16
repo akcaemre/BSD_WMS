@@ -5,7 +5,6 @@ import { Observable } from 'rxjs/Observable';
 import { AppComponent } from '../../app.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { HeaderComponent } from '../components/header/header.component';
-import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 
 @Component({
     selector: 'app-warehouses',
@@ -14,23 +13,17 @@ import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 })
 
 export class WarehouseComponent implements OnInit {
-    selectedRow : Number = 0;
-    setClickedRow : Function;
-    rowCount: number;
+    private selectedRow : number = 0;
 
     private dbData : Array<any> = new Array<any>();
-    private name : string = "";
-    private color : string = "";
-    private strength : string = "";
+    private filter = { colornr : "", name : "", strength: "" };
     private currentTable : string = "Rohwaren";
-    public Lagereintrag: Observable<Array<any>>;
-    public selectedEntry: any;
 
-    constructor(private http: Http, private modalService: NgbModal){
-        this.setClickedRow = function(index){
-            this.selectedRow = index;
-        }
-    };
+    constructor(private http: Http, private modalService: NgbModal){ };
+
+    ngOnInit() {
+        this.getItems(AppComponent.getLink("read", "&table=Rohwaren"));
+    }
 
     // connects this method with the popup dialog that lets us add and remove entrys from the warehouse
     @ViewChild('popupDialog')
@@ -38,7 +31,7 @@ export class WarehouseComponent implements OnInit {
     public showItemDialog()
     {
         this.modalService.open(this.wizardRef);
-        this.selectedRow = this.getSelectedRB()
+        this.setSelectedRB();
         this.fillItemDialog();
     }
     public suspendItemDialog() {
@@ -47,77 +40,66 @@ export class WarehouseComponent implements OnInit {
 
     fillItemDialog() {
         var theader : HTMLElement = document.getElementById('selectedItemTable').getElementsByTagName('thead')[0];
-        var theaderOut : string = "";
-        theaderOut += "<tr>";
-
-        for(var key in this.dbData[0])
-            if(!key.includes("id"))
-                theaderOut += "<td>" + key + "</td>";
-
-        theaderOut += "</tr>";
-
-        theader.innerHTML = theaderOut;
-
         var tbody : HTMLTableSectionElement = document.getElementById("selectedItemTable").getElementsByTagName("tbody")[0];
-        var tbodyOut : string = "";
-        tbodyOut += "<tr>";
+        var theaderOut : string = "<tr>";
+        var tbodyOut : string = "<tr>";
 
-        for (var key in this.dbData[toInteger(this.selectedRow)]) {
+        for (var key in this.dbData[this.selectedRow]) {
             if(!key.includes("id")) {
-                tbodyOut += "<td>" + this.dbData[toInteger(this.selectedRow)][key] + "</td>";
+                theaderOut += "<td>" + key + "</td>";
+                tbodyOut += "<td>" + this.dbData[this.selectedRow][key] + "</td>";
             }
         }
-        tbodyOut +=  '</tr>';
-        
-        tbody.innerHTML = tbodyOut;
-        console.log(tbody);
+
+        theader.innerHTML = theaderOut + "</tr>";
+        tbody.innerHTML = tbodyOut + "</tr>";
     }
 
 
     // gets called when a line gets selected (via radio button or klick on the row)
-    private getSelectedRB() {
+    public setSelectedRB() {
         var toReturn = 0;
+
         for(var idx = 0; idx <= this.dbData.length; idx++)  {
             var b : any = document.getElementById("btnRadio" + idx);
 
             if(b.checked) {
                 toReturn = idx;
-                console.log(idx);
                 break;
             }
         }
-        return toReturn;
+
+        this.selectedRow = toReturn;
     }
     
 
     outsourceFromWarehouse() {
-        //TODO: Transaction erstellen + Tabelle updaten
-        //this.createNewTransaktion("Auslagerung");
-        console.log("transaction created");
+        //#### Transaction erstellen #### Transaction wird nach erfolgreichem Update erstellt!!
+        // TODO: 
+        //  Tabelle im Modal updaten 
         this.updateExistingWarehouseEntry(this.selectedRow, false);
     }
 
     insertIntoWarehouse() {
-        //this.createNewTransaktion("Einlagerung");
         this.updateExistingWarehouseEntry(this.selectedRow, true);
     }
 
     // CREATING A NEW TRANSAKTION
-    createNewTransaktion(type: string, toAdd, source) {
-        var menge = parseFloat(toAdd.Menge);
+    createNewTransaktion(isInsert: boolean, toAdd, source) {
+        var menge =  Math.abs(parseFloat(source.Menge) - parseFloat(toAdd.Menge));
         var preis = parseFloat(toAdd.Preis);
         var sum = menge * preis;
 
         var json = {
             "Name": HeaderComponent.getUsername(),
             "Produkt": toAdd.Warengruppe,
-            "Menge": toAdd.Menge,
+            "Menge": menge,
             "Einheit": toAdd.Mengenangabe,
             "PreisProEinheit": preis,
             "Gesamtpreis":  sum,
             "Waehrung": "€",
             "Datum": new Date(),
-            "Typ": type,
+            "Typ": isInsert ? "Einlagerung" : "Auslagerung",
             "Bezahlt": "false"
           };
           console.log(json);
@@ -130,28 +112,23 @@ export class WarehouseComponent implements OnInit {
         var oldEntry = this.clone(this.dbData[selectedRow]);
         var newEntry =  this.clone(this.dbData[selectedRow]);
         var input = document.getElementById("removeDialogAmount") as HTMLInputElement;
-        //TODO: fill newEntry with new data from the popup dialog
-        if(isInsert)
-            newEntry["Menge"] = toInteger(newEntry["Menge"]) + toInteger(input.value) + "";
-        else
-            newEntry["Menge"]= toInteger(newEntry["Menge"]) - toInteger(input.value) + "";
+        newEntry["Menge"] = parseInt(newEntry["Menge"]) + parseInt(input.value) * (isInsert ?  1 : -1 );
 
         var json = {"source": oldEntry, "destination": newEntry};
 
-
-        console.log(newEntry);
-        console.log(json);
-        console.log(AppComponent.getLink("update", "&table=" + this.currentTable));
         this.http.put(AppComponent.getLink("update", "&table=" + this.currentTable), json)
         .map(res => res.json()).subscribe((data) => {
             console.log("SUCCESS");
             console.log(data);
-            this.createNewTransaktion(isInsert ? "Einlagerung" : "Auslagerung", data.updated, data.source).map(res => res.json()).subscribe((data) => {
+
+            this.createNewTransaktion(isInsert, 
+            data.updated, data.source).map(res => res.json()).subscribe((data) => {
                 console.log("SUCCESS");
                 console.log(data);
             },
                 (err) => console.log(err + " ErrorCode: " + err.status)
             );
+
             this.getItems(AppComponent.getLink("read", "&table=" + this.currentTable));
         },
             (err) => console.log(err + " ErrorCode: " + err.status)
@@ -168,10 +145,13 @@ export class WarehouseComponent implements OnInit {
     }
 
     /* TODO: creating new warehouse entries
-    addNewWarehouseEntry() {
+    addNewWarehouseEntry(entryToAdd) {
         return this.http.post(
             AppComponent.getLink("add", "&table="+this.currentTable), 
-            {
+            // Use this
+            entryToAdd
+            // Just a copy
+            { 
                 "Name": HeaderComponent.getUsername(),
                 "Produkt": this.selectedEntry[0],
                 "Menge": this.selectedEntry[1],
@@ -186,11 +166,6 @@ export class WarehouseComponent implements OnInit {
         );
     }
     */
-   
-
-    ngOnInit() {
-        this.getItems(AppComponent.getLink("read", "&table=Rohwaren"));
-     }
 
      /*
      isNewEntry() {
@@ -202,7 +177,6 @@ export class WarehouseComponent implements OnInit {
          return true;
      }
      */
-
 
     radioButtonOnClick (table : string) {
         switch(table){
@@ -227,63 +201,87 @@ export class WarehouseComponent implements OnInit {
     filterBy (filterName : string) {
         switch(filterName) {
             case "color":
-                this.color = (document.getElementById("txt_Color") as HTMLInputElement).value;
+                this.filter.colornr = (document.getElementById("txt_Color") as HTMLInputElement).value;
                 break;
             case "name":
-                this.name = (document.getElementById("txt_Name") as HTMLInputElement).value;
+                this.filter.name = (document.getElementById("txt_Name") as HTMLInputElement).value;
                 break;
             case "strength":
-                this.strength = (document.getElementById("txt_Strength") as HTMLInputElement).value;
+                this.filter.strength = (document.getElementById("txt_Strength") as HTMLInputElement).value;
                 break;
         }
 
-        this.generateTable(this.dbData, { colornr : this.color, name : this.name, strength: this.strength });
+        this.refreshTable(this.dbData, this.filter);
     }
 
     getItems (url : string) {
-        var theader : HTMLElement = document.getElementById('warehouseitemtable').getElementsByTagName('thead')[0];
-        var theaderOut : string = "";
-
         this.dbData = new Array<any>();
 
         this.http.get(url).subscribe(res =>{
             res.json().map(e => {
                 this.dbData.push(e);
             })
+            this.refreshTable(this.dbData, this.filter);
+        });
+    }
+    
+    refreshTable(data: Array<any>, filter: any) {
+        var theader : HTMLElement = document.getElementById('warehouseitemtable').getElementsByTagName('thead')[0];
+        var tbody : HTMLElement = document.getElementById('warehouseitemtable').getElementsByTagName('tbody')[0];
 
-            theaderOut += "<tr><td>Nr</td>";
+        var table = this.generateTable(this.dbData, this.filter);
+        theader.innerHTML = table.header;
+        tbody.innerHTML = table.body;
+    }
+
+    /** Creates a Table with the given data array and filter
+     * @param data: Array<any> of the wanted array
+     * @param filter: json string of the filters. name, strength, colornr (filter can be null)
+     * @returns json with {header: "...", body: "..."}
+     */
+    generateTable (data: Array<any>, filter: any) {        
+        return {"header": this.generateHeader(data), "body": this.generateBody(data, filter)};
+    }
+
+    private generateHeader(data: Array<any>) {
+        var theaderOut : string = "";
+
+        theaderOut += "<tr><td>Nr</td>";
             for(var key in this.dbData[0])
                 if(!key.includes("id"))
                     theaderOut += "<td>" + key + "</td>";
     
-            theaderOut += "<td>#</td></tr>";
-    
-            theader.innerHTML = theaderOut;
-            this.generateTable(this.dbData, { colornr : this.color, name : this.name, strength: this.strength });
-        });
+        theaderOut += "<td>#</td></tr>";
+
+        return theaderOut;
     }
-    
-    generateTable(data : Array<any>, filter : any) {
-        var tbody : HTMLTableSectionElement = document.getElementById('warehouseitemtable').getElementsByTagName('tbody')[0];
+
+    /** Generates content of a table body (tbody)
+     * @param data: Array<any> of the wanted array
+     * @param filter: json string of the filters. name, strength, colornr (filter can be null)
+     * @returns string
+     */
+    private generateBody (data : Array<any>, filter: any) : string {
         var tbodyOut : string = "";
-        
+
         for(var idx = 0; idx < data.length; idx++) {
-            if(this.shouldShowEntry(data[idx], filter)) { 
-                    tbodyOut += "<tr><th scope=\"col\">" + (idx+1) + "</th>";
+            if(filter != null && this.shouldShowEntry(data[idx], filter)) {
+                tbodyOut += "<tr><th scope=\"col\">" + (idx+1) + "</th>";
 
-                    for (var key in this.dbData[0]) {
-                        if(!key.includes("id")) {
-                            tbodyOut += "<td>" + data[idx][key] + "</td>";
-                        }
+                for (var key in data[0]) {
+                    if(!key.includes("id")) {
+                        tbodyOut += "<td>" + data[idx][key] + "</td>";
                     }
-
-                    tbodyOut +=  '<td><div class="radio">'
-                            + '<input type="radio" name="selectionRadioBs" '
-                            + 'id="btnRadio' + idx +'" value="' + idx +'"'
-                            + ')"/></div></td></tr>';
                 }
-            } 
-        tbody.innerHTML = tbodyOut;
+
+                tbodyOut +=  '<td><div class="radio">'
+                        + '<input type="radio" name="selectionRadioBs" '
+                        + 'id="btnRadio' + idx +'" '
+                        + 'value="' + idx +'" /></div></td></tr>';  
+            }
+        }
+
+        return tbodyOut;
     }
 
     shouldShowEntry(e : any, filter : any) {
@@ -293,7 +291,6 @@ export class WarehouseComponent implements OnInit {
 
         return e["Warengruppe"].toLowerCase().includes(filter.name.toLowerCase());
     }
-
 
     adjustColumnsForNaehseiden() {
         (document.getElementById("txt_Color") as HTMLInputElement).removeAttribute("disabled");
@@ -306,11 +303,11 @@ export class WarehouseComponent implements OnInit {
     }
 
     adjustColumnsForKnoepfe() {
-
+        this.adjustColumnsForBundhaken();
     }
 
     adjustColumnsForRohwaren() {
-
+        this.adjustColumnsForBundhaken();
     }
 }
 

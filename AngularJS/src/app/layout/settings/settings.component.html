@@ -1,15 +1,6 @@
-<h1>Settings</h1>
-
-<div id="div_IP" class="col col-xl-12 col-lg-6">
-    <h2>Netzwerkeinstellungen</h2>
-    IP Adresse ändern: <input [(ngModel)]="ip" name="input_IP" type="text" id="input_IP" />
-    <button id="bttn_SaveIP" class="btn btn-primary" (click)="setIP()">Speichern</button>
-    <p id="p_outputIP"></p>
-</div>
-
+<h1>Benutzereinstellungen</h1>
 <div id="div_Usersettings" class="col col-xl-12 col-lg-6">
-    <h2>Benutzereinstellungen</h2>
-    <h3>Neuen Nutzer registrieren</h3>
+    <h2>Neuen Nutzer registrieren</h2>
     <form class="needs-validation" role="form" novalidate>
     <div class="form-row">
         <div class="col-md-4 mb-3">
@@ -46,7 +37,7 @@
         </div>
     </div>
 
-    <button class="btn btn-primary" type="submit" (click)="register()">Submit form</button>
+    <button class="btn btn-primary" type="submit" (click)="register()">Registrieren</button>
 
     <p id="out">Status: </p>
   </form>

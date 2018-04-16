@@ -25,7 +25,8 @@ export class TransactionComponent implements OnInit {
     getTransactions(){
         var theader : HTMLElement = document.getElementById('myTable').getElementsByTagName('thead')[0];
         var theaderOut : string = "";
-
+        this._transactions = new Array<any>();
+        
 		this.http.get(AppComponent.getLink("read", "&table=Transaktionen")).subscribe(res =>{
             res.json().map(e => {
                 this._transactions.push(e);
