@@ -6,17 +6,23 @@ nodejs und mongodb auf dem Gerät installieren
 https://nodejs.org/en/
 https://www.mongodb.com/download-center#atlas
 
-git clone https://github.com/akcaemre/BSD_WMS/
+<code>git clone https://github.com/akcaemre/BSD_WMS/</code>
 
 script ausführen
 
 Bei erster Benutzung
+
 In AngularJS Folder
-npm install
+
+<code>
+  npm install
+
 npm run-script build
+</code>
 
 In WebService Folder
-npm install
+
+<code>npm install</code>
 
 # VM
 
