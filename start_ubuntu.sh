@@ -6,7 +6,7 @@ cd ./AngularJS
 # First use
 # npm install
 # npm run-script build
-ng serve --host 0.0.0.0
+ng serve -host 0.0.0.0
 
 cd ../NodeJS_express_WS
 # First use
